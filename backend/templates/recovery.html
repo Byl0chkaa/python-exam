@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #ffffff;">
+    <h2 style="color: #2c3e50; margin-bottom: 20px; font-weight: 600;">Відновлення пароля</h2>
+
+    <p style="color: #555555; font-size: 16px; line-height: 1.5; margin-bottom: 25px;">
+        Ми отримали запит на скидання пароля для вашого акаунта. Якщо ви цього не робили, просто проігноруйте цей лист. В іншому випадку натисніть кнопку нижче, щоб встановити новий пароль.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 30px;">
+        <a href="{{ url }}" style="display: inline-block; padding: 12px 30px; font-size: 16px; color: #ffffff; background-color: #3498db; text-decoration: none; border-radius: 5px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            Встановити новий пароль
+        </a>
+    </div>
+
+    <p style="color: #e74c3c; font-size: 13px; margin-bottom: 20px;">
+        * Зверніть увагу, що це посилання дійсне протягом обмеженого часу.
+    </p>
+
+    <hr style="border: 0; border-top: 1px solid #eeeeee; margin-bottom: 20px;">
+    <p style="color: #999999; font-size: 12px; line-height: 1.4;">
+        Якщо кнопка вище не працює, скопіюйте це посилання у браузер: <br>
+        <a href="{{ url }}" style="color: #3498db; word-break: break-all;">{{ url }}</a>
+    </p>
+</div>
+{% endblock %}
