@@ -19,9 +19,10 @@ class ChatConsumer(GenericAsyncAPIConsumer):
         self.user_name = None
 
     async def connect(self):
-        if not self.scope.get('user') or not self.scope['user'].is_authenticated:
+        if not self.scope.get('user') or not getattr(self.scope['user'], 'is_authenticated', False):
             await self.close()
             return
+
         await self.accept()
 
         self.user_name = await self.get_profile_name()
@@ -41,9 +42,9 @@ class ChatConsumer(GenericAsyncAPIConsumer):
 
             messages = await self.get_last_five_messages()
             for name, text in messages:
-                await self.sender({
+                await self.send_json({
                     'message': text,
-                    'user': f"{self.scope['user'].id}_{self.user_name}",
+                    'user': name,
                     'request_id': str(datetime.datetime.now())
                 })
 
@@ -63,13 +64,17 @@ class ChatConsumer(GenericAsyncAPIConsumer):
         if not self.room:
             return await self.send_json({"error": "You are not connected to a specific room."})
 
-        await MessageModel.objects.acreate(room=self.room, user=self.scope['user'], text=data['text'])
+        text = data.get('text')
+        if not text:
+            return await self.send_json({"error": "Message text is empty."})
+
+        await MessageModel.objects.acreate(room=self.room, user=self.scope['user'], text=text)
 
         await self.channel_layer.group_send(
             self.room.name,
             {
                 'type': 'sender',
-                'message': data['text'],
+                'message': text,
                 'user': f"{self.scope['user'].id}_{self.user_name}",
                 'id': request_id
             }
@@ -89,9 +94,14 @@ class ChatConsumer(GenericAsyncAPIConsumer):
         max_id = max(current_user_id, int(recipient_id))
 
         private_room_name = f"chat_ad_{ad_id}_users_{min_id}_{max_id}"
-        private_room, is_created = await self.get_or_create_private_room(private_room_name, ad_id)
+        private_room = await self.get_or_create_private_room(private_room_name, ad_id)
 
-        await self.add_users_to_room(private_room, current_user_id, recipient_id)
+        if not private_room:
+            return await self.send_json({"error": "Car Ad not found."})
+
+        room_ready = await self.add_users_to_room(private_room, current_user_id, recipient_id)
+        if not room_ready:
+            return await self.send_json({"error": "Recipient user not found."})
 
         await MessageModel.objects.acreate(room=private_room, user=self.scope['user'], text=text)
 
@@ -105,13 +115,11 @@ class ChatConsumer(GenericAsyncAPIConsumer):
         }
 
         await self.channel_layer.group_send(private_room_name, payload)
-
         await self.channel_layer.group_send(f"user_{recipient_id}", payload)
-
 
     @database_sync_to_async
     def get_profile_name(self):
-        return self.scope['user'].profile.name
+        return getattr(self.scope['user'].profile, 'name', 'Unknown')
 
     @database_sync_to_async
     def get_last_five_messages(self):
@@ -123,18 +131,26 @@ class ChatConsumer(GenericAsyncAPIConsumer):
             pk=F('user__pk')
         ).values('text', 'name', 'pk').order_by('-id')[:5]
 
-        return reversed([(f"{msg['pk']}_{msg['name']}", msg['text']) for msg in res])
+        return list(reversed([(f"{msg['pk']}_{msg['name']}", msg['text']) for msg in res]))
 
     @database_sync_to_async
     def get_or_create_private_room(self, room_name, ad_id):
-        ad = CarAdModel.objects.get(id=ad_id)
-        return ChatRoomModel.objects.get_or_create(
-            name=room_name,
-            defaults={'is_private': True, 'ad': ad}
-        )
+        try:
+            ad = CarAdModel.objects.get(id=ad_id)
+            room, _ = ChatRoomModel.objects.get_or_create(
+                name=room_name,
+                defaults={'is_private': True, 'ad': ad}
+            )
+            return room
+        except CarAdModel.DoesNotExist:
+            return None
 
     @database_sync_to_async
     def add_users_to_room(self, room, user1_id, user2_id):
-        user1 = UserModel.objects.get(id=user1_id)
-        user2 = UserModel.objects.get(id=user2_id)
-        room.users.add(user1, user2)
+        try:
+            user1 = UserModel.objects.get(id=user1_id)
+            user2 = UserModel.objects.get(id=user2_id)
+            room.users.add(user1, user2)
+            return True
+        except UserModel.DoesNotExist:
+            return False

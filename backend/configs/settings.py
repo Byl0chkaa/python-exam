@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
 from pathlib import Path
-
+from .extra_conf import *
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +37,7 @@ AUTH_USER_MODEL = 'users.UserModel'
 
 INSTALLED_APPS = [
     'daphne',
+    'django_filters',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
@@ -63,7 +64,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'configs.urls'
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST')

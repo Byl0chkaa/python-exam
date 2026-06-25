@@ -7,6 +7,7 @@ from apps.users.models import ProfileModel
 
 UserModel = get_user_model()
 
+
 class ManagerCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
@@ -14,10 +15,19 @@ class ManagerCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = secrets.token_urlsafe(12)
-        return UserModel.objects.create_user(
+        user = UserModel.objects.create_user(
             **validated_data,
             password=password,
         )
+
+        ProfileModel.objects.create(
+            user=user,
+            name=validated_data.get('username', 'Manager'),
+            surname='',
+            age=18,
+        )
+        return user
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,7 +51,10 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         if profile_data:
-            profile = instance.profile
+            profile, _ = ProfileModel.objects.get_or_create(
+                user=instance,
+                defaults={'name': '', 'surname': '', 'age': 18}
+            )
             for attr, value in profile_data.items():
                 setattr(profile, attr, value)
             profile.save()

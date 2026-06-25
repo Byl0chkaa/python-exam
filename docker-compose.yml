@@ -10,21 +10,20 @@ services:
     ports:
       - "9999:8000"
     depends_on:
-      - db
+#      - db
       - redis
     restart: on-failure
     command: > 
-      sh -c "python manage.py wait_db && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-
-  db:
-    image: mysql:8
-    env_file:
-      - .env
-    ports:
-      - "3310:3306"
-    volumes:
-      - ./mysql:/var/lib/mysql
-    restart: on-failure
+      sh -c "python manage.py wait_db && python manage.py migrate && python manage.py loaddata catalog_fixture.json && python manage.py seed_forbidden_words && python manage.py fetch_exchange_rates && python manage.py runserver 0.0.0.0:8000"
+#  db:
+#    image: mysql:8
+#    env_file:
+#      - .env
+#    ports:
+#      - "3310:3306"
+#    volumes:
+#      - ./mysql:/var/lib/mysql
+#    restart: on-failure
 
   redis:
     image: redis:alpine
@@ -42,7 +41,7 @@ services:
       - .env
     depends_on:
       - redis
-      - db
+#      - db
     restart: on-failure
     command: sh -c "celery -A configs worker -l info"
   celery-beat:
@@ -54,7 +53,7 @@ services:
       - .env
     depends_on:
       - redis
-      - db
+#      - db
     restart: on-failure
     command: sh -c "celery -A configs beat -l info"
 

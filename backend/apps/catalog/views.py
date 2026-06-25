@@ -1,5 +1,6 @@
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from apps.catalog.models import (BodyTypeModel, BrandModel, CarModelModel,
                                  CityModel, FuelTypeModel,
@@ -53,6 +54,7 @@ class CityListApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
 class MissingBrandRequestCreateApiView(CreateAPIView):
+    authentication_classes = [JWTAuthentication]
     queryset = MissingBrandRequestModel.objects.all()
     serializer_class = MissingBrandRequestSerializer
     permission_classes = [IsAuthenticated]

@@ -1,6 +1,7 @@
-from apps.chat.consumers import ChatConsumer
+from apps.chat.routing import websocket_urlpatterns as chat_routing
+from channels.routing import URLRouter
 from django.urls import path
 
 websocket_urlpatterns = [
-    path('api/chat/<str:room>/', ChatConsumer.as_asgi()),
+    path('api/chat/', URLRouter(chat_routing)),
 ]

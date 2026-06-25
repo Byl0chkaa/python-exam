@@ -11,4 +11,4 @@ class AddsFilter(filters.FilterSet):
 
     class Meta:
         model = CarAdModel
-        fields = ('year', 'brand', 'city')
+        fields = ['price_filter', 'year_filter', 'brand_filter', 'city_filter']
