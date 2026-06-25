@@ -7,13 +7,14 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from apps.dealerships.models import DealershipEmployeeModel, DealershipModel
 from apps.dealerships.serializer import (DealershipEmployeeSerializer,
                                          DealershipSerializer)
+from core.permissions import IsSellerOrAdmin
 
 
 class DealershipListCreateApiView(ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
     queryset = DealershipModel.objects.all()
     serializer_class = DealershipSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsSellerOrAdmin,)
 
     def perform_create(self, serializer):
         dealership = serializer.save()
@@ -28,7 +29,7 @@ class DealershipRetrieveUpdateDestroyApiView(RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTAuthentication]
     queryset = DealershipModel.objects.all()
     serializer_class = DealershipSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsSellerOrAdmin,)
 
     def check_object_permissions(self, request, obj):
         super().check_object_permissions(request, obj)
@@ -48,7 +49,7 @@ class DealershipRetrieveUpdateDestroyApiView(RetrieveUpdateDestroyAPIView):
 class DealershipEmployeeListCreateApiView(ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
     serializer_class = DealershipEmployeeSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsSellerOrAdmin,)
 
     def get_queryset(self):
         return DealershipEmployeeModel.objects.filter(dealership_id=self.kwargs['dealership_id'])
