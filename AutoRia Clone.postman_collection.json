@@ -1,0 +1,1441 @@
+{
+  "info": {
+    "_postman_id": "b519331a-910e-4440-9584-a5021725e9b0",
+    "name": "AutoRia Clone",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52315553",
+    "_collection_link": "https://go.postman.co/collection/52315553-b519331a-910e-4440-9584-a5021725e9b0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"admin\",\r\n    \"username\": \"oleg\",\r\n    \"profile\": {\r\n        \"name\": \"oleg\",\r\n        \"surname\": \"olegovich\",\r\n        \"age\": 16\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/auth/register/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "register",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "res = pm.response.json()\r",
+                  "pm.environment.set(\"access\", res.access);\r",
+                  "pm.environment.set(\"refresh\", res.refresh);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "sakalo.vicky@gmail.com",
+                  "type": "text",
+                  "uuid": "651491a3-e788-4e08-b299-26d56c9dba30",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "text",
+                  "uuid": "379da58c-ad0b-490b-ab33-4cfdd9af532b",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "byl0chkazpersikom@gmail.com",
+                  "type": "text",
+                  "uuid": "7af48268-d1d6-4c39-bc86-ff1b8030af4f"
+                },
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "text",
+                  "uuid": "e0fbe3e2-97bf-4045-bea9-73d9cb5a98a1"
+                },
+                {
+                  "key": "email",
+                  "value": "test@gmail.com",
+                  "type": "text",
+                  "uuid": "a44ac0af-c1e6-448b-981b-21a69515ceac",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "text",
+                  "uuid": "3d911d9e-d668-4fae-bee1-20956b2cd743",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/auth/login/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "login",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refresh",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "res = pm.response.json()\r",
+                  "pm.environment.set(\"access\", res.access);\r",
+                  "pm.environment.set(\"refresh\", res.refresh);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "refresh",
+                  "value": "{{refresh}}",
+                  "type": "text",
+                  "uuid": "58f7b723-4d46-4537-a778-241657f9447f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/auth/refresh/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "refresh",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "recovery",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "pm.environment.set(\"access\", jsonData.access);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"byl0chkazpersikom@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/auth/recovery/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "recovery",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "activate",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/auth/activate/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWN0aXZhdGUiLCJleHAiOjE3ODIzNDMyNzQsImlhdCI6MTc4MjM0MjY3NCwianRpIjoiYzI2MGE0ZjQ5MzQ5NGVhNGEwODViZGQ1NTAxNDhmY2YiLCJ1c2VyX2lkIjoiMSJ9.hLXJNOZezcBa0YW5EzoYgxEAFKKkpmVkWcwz60DOAgc/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "activate",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWN0aXZhdGUiLCJleHAiOjE3ODIzNDMyNzQsImlhdCI6MTc4MjM0MjY3NCwianRpIjoiYzI2MGE0ZjQ5MzQ5NGVhNGEwODViZGQ1NTAxNDhmY2YiLCJ1c2VyX2lkIjoiMSJ9.hLXJNOZezcBa0YW5EzoYgxEAFKKkpmVkWcwz60DOAgc",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "recoveryPassword",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "password",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "72b1184a-12b4-4e09-bbea-7b45093ab99f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/auth/recovery/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVjb3ZlcnkiLCJleHAiOjE3ODIzMDQ0ODcsImlhdCI6MTc4MjMwMzg4NywianRpIjoiMDRkMzVlMzViYWMyNDU3YmE3YWE3ZDQ1NWFlZWQyYTYiLCJ1c2VyX2lkIjoiMTIifQ.YWBgzvf4rnara7xvSriSu7iGFh5eBG0NrlWXGyFpjbo/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "recovery",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVjb3ZlcnkiLCJleHAiOjE3ODIzMDQ0ODcsImlhdCI6MTc4MjMwMzg4NywianRpIjoiMDRkMzVlMzViYWMyNDU3YmE3YWE3ZDQ1NWFlZWQyYTYiLCJ1c2VyX2lkIjoiMTIifQ.YWBgzvf4rnara7xvSriSu7iGFh5eBG0NrlWXGyFpjbo",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "socketToken",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/auth/socket/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "socket",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ads",
+      "item": [
+        {
+          "name": "seeAds",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": []
+            },
+            "url": {
+              "raw": "{{host}}/ads/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "ads",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "brand_filter",
+                  "value": "BMW",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "city_filter",
+                  "value": "Львів",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "price_filter_min",
+                  "value": "12000",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "price_filter_max",
+                  "value": "20000",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "adDetails",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/ads/1/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "ads",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "adPhoto",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "eaf48f52-f97b-48d7-a748-1763b760f4ad",
+                  "src": "/C:/Users/sakal/Downloads/car.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/ads/3/images/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "ads",
+                "3",
+                "images",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "adStatistic",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/ads/3/statistics/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "ads",
+                "3",
+                "statistics",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "moderate",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "status",
+                  "value": "Active",
+                  "type": "text",
+                  "uuid": "997a85f7-a463-4ae5-8f2c-9e810f1b72bf"
+                },
+                {
+                  "key": "status",
+                  "value": "Rejected",
+                  "type": "text",
+                  "uuid": "658aac00-e668-4d5a-a1cf-208ebf6fd335",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/ads/3/moderate/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "ads",
+                "3",
+                "moderate",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createAd",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "brand",
+                  "value": "BMW",
+                  "type": "text",
+                  "uuid": "7f3522d6-a5ec-45f0-afa0-d3efb488896e"
+                },
+                {
+                  "key": "car_model",
+                  "value": "X5",
+                  "type": "text",
+                  "uuid": "aa2746df-b6cb-47df-8efc-2b786f6d8b11"
+                },
+                {
+                  "key": "body_type",
+                  "value": "Coupe",
+                  "type": "text",
+                  "uuid": "d0e5196a-5ce1-496f-bddd-1ea03d4dc6e8"
+                },
+                {
+                  "key": "fuel_type",
+                  "value": "Electric",
+                  "type": "text",
+                  "uuid": "dd8f594b-7543-4b9c-933f-815470604013"
+                },
+                {
+                  "key": "transmission",
+                  "value": "Manual",
+                  "type": "text",
+                  "uuid": "3f655bc6-4b22-4703-b9e8-64f5106d9648"
+                },
+                {
+                  "key": "city",
+                  "value": "Київ",
+                  "type": "text",
+                  "uuid": "6e0a2f6d-9171-4121-a96f-77842e6f6427"
+                },
+                {
+                  "key": "year",
+                  "value": "2021",
+                  "type": "text",
+                  "uuid": "3495c9b3-f1ca-42f1-b104-ac4501743c0a"
+                },
+                {
+                  "key": "mileage",
+                  "value": "1233",
+                  "type": "text",
+                  "uuid": "51ccdc4d-4768-4e0c-ab70-19bd818b356b"
+                },
+                {
+                  "key": "description",
+                  "value": "машина",
+                  "type": "text",
+                  "uuid": "183defe6-9dba-437b-bdd0-1712ef0da2c1"
+                },
+                {
+                  "key": "original_price",
+                  "value": "22000",
+                  "type": "text",
+                  "uuid": "34a123c8-57dc-4946-a36b-33a42c4b9507"
+                },
+                {
+                  "key": "original_currency",
+                  "value": "USD",
+                  "type": "text",
+                  "uuid": "5cb37e6e-0843-45e1-85f2-5e58fe66b987"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/ads/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "ads",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "seeAd",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "brand_filter",
+                  "value": "BMW",
+                  "type": "text",
+                  "uuid": "7f3522d6-a5ec-45f0-afa0-d3efb488896e"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/ads/2/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "ads",
+                "2",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "changeAd",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "brand",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "3e13ccdb-7810-4ef6-8297-5c0da285e1ed",
+                  "disabled": true
+                },
+                {
+                  "key": "car_model",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "b7b5d259-abda-4fbe-b073-d4b57d3f6e50",
+                  "disabled": true
+                },
+                {
+                  "key": "body_type",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "4ceccb1f-d427-4ab4-b301-5a4ff9e76632",
+                  "disabled": true
+                },
+                {
+                  "key": "fuel_type",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "5acab94a-d06c-48ae-a5d4-e2e1965a2a94",
+                  "disabled": true
+                },
+                {
+                  "key": "transmission",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "89da8be1-8c5f-43d5-9a7d-3138c8946836",
+                  "disabled": true
+                },
+                {
+                  "key": "city",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "4f09d484-af94-4e9d-9228-afe51e1c8cf7",
+                  "disabled": true
+                },
+                {
+                  "key": "year",
+                  "value": "2000",
+                  "type": "text",
+                  "uuid": "1f287b5a-c4a9-49b0-a637-c61d6a265e0d"
+                },
+                {
+                  "key": "mileage",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "aafa15b1-3dcb-4197-9d5c-5bd82f123265",
+                  "disabled": true
+                },
+                {
+                  "key": "description",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "221e2892-4f47-4d4a-bc6d-de90932e1840",
+                  "disabled": true
+                },
+                {
+                  "key": "original_price",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "6fe49a9d-9c27-4516-a8a6-81d329fbb367",
+                  "disabled": true
+                },
+                {
+                  "key": "original_currency",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "2ffca281-ba47-45a3-8b7a-951687cece68",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/ads/3/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "ads",
+                "3",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteAd",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "brand",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "221e2892-4f47-4d4a-bc6d-de90932e1840"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/ads/2/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "ads",
+                "2",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "catalog",
+      "item": [
+        {
+          "name": "brands",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/catalog/brands/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "catalog",
+                "brands",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "models",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/catalog/car-models/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "catalog",
+                "car-models",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "body-types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/catalog/body-types/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "catalog",
+                "body-types",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "fuel-types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/catalog/fuel-types/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "catalog",
+                "fuel-types",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "transmissions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/catalog/transmissions/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "catalog",
+                "transmissions",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "regions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/catalog/regions/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "catalog",
+                "regions",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cities",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/catalog/cities/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "catalog",
+                "cities",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "missing-brands-request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "proposed_brand_name",
+                  "value": "Infinity",
+                  "type": "text",
+                  "uuid": "4f4ec187-d62c-4307-8749-b8e5d4314d59"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/catalog/missing-brand-request/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "catalog",
+                "missing-brand-request",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "dealerships",
+      "item": [
+        {
+          "name": "allDealerships",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": []
+            },
+            "url": {
+              "raw": "{{host}}/dealerships/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "dealerships",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "dealershipDetails",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/dealerships/1/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "dealerships",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "dealershipEmployees",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/dealerships/2/employees/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "dealerships",
+                "2",
+                "employees",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createDealership",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "Tesla",
+                  "type": "text",
+                  "uuid": "fd083571-2eb6-4c3b-9b20-430d4656d259"
+                },
+                {
+                  "key": "description",
+                  "value": "cool",
+                  "type": "text",
+                  "uuid": "0ae123b1-0e9d-4cae-b7b7-aaf1e276aa8e"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/dealerships/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "dealerships",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "dealershipDetailsChange",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "Tesla",
+                  "type": "text",
+                  "uuid": "a2ed3152-8925-4a2a-96b0-1d2d11ab7efe"
+                },
+                {
+                  "key": "description",
+                  "value": "very cool",
+                  "type": "text",
+                  "uuid": "ee61d1af-7458-4d8d-b51a-fc5e1b70d811"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/dealerships/2/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "dealerships",
+                "2",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "dealershipDetailsDelete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": []
+            },
+            "url": {
+              "raw": "{{host}}/dealerships/1/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "dealerships",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "dealershipEmployeesAdd",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "user",
+                  "value": "2",
+                  "type": "text",
+                  "uuid": "a75dd368-6dc2-4cd5-9dec-13c5131b7c2e"
+                },
+                {
+                  "key": "role",
+                  "value": "Mechanic",
+                  "type": "text",
+                  "uuid": "839af0a2-8bf8-464e-9bb1-eb0d905ad4b5"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/dealerships/2/employees/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "dealerships",
+                "2",
+                "employees",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "profile",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": []
+            },
+            "url": {
+              "raw": "{{host}}/users/profile/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "users",
+                "profile",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-manager",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "admin1@gmail.com",
+                  "type": "text",
+                  "uuid": "910aca40-faf0-4379-83dd-e9213e31893d"
+                },
+                {
+                  "key": "username",
+                  "value": "admin1",
+                  "type": "text",
+                  "uuid": "3aae5471-2205-4568-b054-01d5a70d52cc"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/users/managers/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "users",
+                "managers",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "setPremium",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"account_type\": \"Premium\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/users/1/upgrade/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "users",
+                "1",
+                "upgrade",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "changeProfile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"profile\": {\r\n        \"name\": \"Vika\",\r\n        \"surname\": \"Bylba\",\r\n        \"age\": 34\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/users/profile/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "users",
+                "profile",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "changeRole",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "role",
+                  "value": "Seller",
+                  "type": "text",
+                  "uuid": "27027341-b692-4b1d-bef3-32233531c6ad"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/users/1/change-role/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "users",
+                "1",
+                "change-role",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
